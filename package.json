@@ -1,0 +1,19 @@
+{
+  "name": "devpr-weekly",
+  "version": "1.0.0",
+  "description": "Support app for DevParana's Weekly newsletter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "devparana",
+    "newsletter"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
