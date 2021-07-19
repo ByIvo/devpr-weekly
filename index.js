@@ -1,13 +1,25 @@
 const express = require('express');
 const fs = require('fs');
 
+const mongoose = require('mongoose');
+const username = process.env.MONGODB_USERNAME;
+const password = process.env.MONGODB_PASSWORD;
+const mongoUrl = process.env.MONGODB_URL;
+const mongoDatabase = process.env.MONGODB_DATABASE;
+const uri = `mongodb+srv://${username}:${password}@${mongoUrl}/${mongoDatabase}?retryWrites=true&w=majority`;
+const conn = mongoose.createConnection(uri);
+
+const MyModel = conn.model('View', { headers: Object });
+
 const app = express();
 const port = process.env.PORT || 3000;
 
-let touches = 0;
-
 app.get('/touch', (req, res) => {
-  touches++;
+  
+  const m = new MyModel();
+  m.headers = req.headers;
+  m.save();
+
   const onePxImageReadStream = fs.createReadStream('./assets/1px.png');
 
   onePxImageReadStream.on('open', function() {
@@ -17,13 +29,6 @@ app.get('/touch', (req, res) => {
 
   onePxImageReadStream.on('error', function() {
     res.status(500).end('Something unexpected happened');
-  });
-});
-
-app.get('/touches', (req, res) => {
-  res.set('Content-type', 'application/json');
-  res.status(200).send({
-    "touches": touches
   });
 });
 
